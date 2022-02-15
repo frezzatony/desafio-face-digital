@@ -26,6 +26,9 @@ class VendasController extends CI_Controller {
 			redirect(BASE_URL.'index.php/vendas','refresh');
 		}
 		
+		$arrDataImportacao = $this->vendas->getDataPlanilha($arrImportPlanilha);
+
+		print_R($arrDataImportacao); exit;
 
 		$this->session->set_flashdata('success', 'Importação realizada.');
 		redirect(BASE_URL.'index.php/vendas','refresh');
