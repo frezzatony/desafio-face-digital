@@ -2,10 +2,10 @@
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Vendas_model extends CI_Model
+class Clientes_model extends CI_Model
 {
     
-    private $table = 'vendas';
+    private $table = 'clientes';
     
     function __construct(){
         parent::__construct();
@@ -28,22 +28,7 @@ class Vendas_model extends CI_Model
             }
         }
         
-        
-        $this->db->select(
-            array(
-                $this->table.'.id',
-                'clientes.id as cliente_id',
-                'clientes.razao_social as cliente_razao_social',
-				'servicos.id as servico_id','servicos.descricao',
-				$this->table.'.dt_venda',$this->table.'.horas_trabalhadas',
-				$this->table.'.valor_faturado',$this->table.'.valor_custo',
-				'('.$this->table.'.valor_faturado - '.$this->table.'.valor_custo) as resultado_venda',
-            )
-        );
-        
         $this->db->from($this->table);
-        $this->db->join('clientes',$this->table.'.cliente_id = clientes.id');
-		$this->db->join('servicos',$this->table.'.servico_id = servicos.id');
         $query = $this->db->get();
         
         return $query->result_array();

@@ -7,4 +7,5 @@ $this->load->view('templates/default/openContentWrapper');
 echo $contents;
 $this->load->view('templates/default/closeContentWrapper');
 $this->load->view('templates/default/footer');
+$this->load->view('templates/vendas/javascripts.php');
 $this->load->view('templates/default/closeBody');

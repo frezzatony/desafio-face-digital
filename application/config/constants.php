@@ -1,6 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+$base_url = (($_SERVER['HTTPS']??NULL) == "on" ? "https" : "http");
+$base_url .= "://".($_SERVER['HTTP_HOST']??NULL);
+$base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+define('BASE_URL', $base_url);
+
+
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace
