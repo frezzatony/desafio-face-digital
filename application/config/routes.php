@@ -54,10 +54,12 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //API
-$route['api/vendas'] = 'api/VendasApiController';
+$route['api/vendas'] = 'api/vendas/VendasApiController';
+$route['api/vendas/indicadores/clientes'] = 'api/vendas/IndicadoresVendasApiController/clientes';
 
 //Vendas
-$route['vendas'] = 'VendasController';
-$route['vendas/importar'] = 'VendasController/importar';
+$route['vendas'] = 'vendas/VendasController';
+$route['vendas/importar'] = 'vendas/VendasController/importar';
+$route['vendas/indicadores/clientes'] = 'vendas/IndicadoresVendasController/cliente';
 
 

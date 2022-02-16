@@ -12,16 +12,43 @@
      <!-- Sidebar Menu -->
      <nav class="mt-2">
        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-         <!-- Add icons to the links using the .nav-icon class
-              with font-awesome or any other icon font library -->
          <li class="nav-item">
            <a href="<?php echo BASE_URL ?>index.php/vendas" class="nav-link">
-             <i class="nav-icon fas fa-tachometer-alt"></i>
+             <i class="far fa-circle nav-icon"></i>
              <p>
                Vendas
              </p>
            </a>
          </li>
+         <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Indicadores de vendas
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo BASE_URL ?>index.php/vendas/indicadores/clientes" class="nav-link">
+                  <i class="nav-icon fas fa-list-alt"></i>
+                  <p>Vendas por cliente</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="nav-icon fas fa-list-alt"></i>
+                  <p>Vendas por serviço</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../layout/boxed.html" class="nav-link">
+                  <i class="nav-icon fas fa-list-alt"></i>
+                  <p>Vendas por mês</p>
+                </a>
+              </li>
+            </ul>
+          </li>
        </ul>
      </nav>
      <!-- /.sidebar-menu -->

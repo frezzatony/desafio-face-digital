@@ -78,9 +78,32 @@ class Vendas_model extends CI_Model
         
     }
     
-    public function validate($arrProp = array())
+    public function getIndicadorPorCliente($arrProp = array())
     {
         
+        if($arrProp['limit']??NULL){
+            $sqlLimit = 'LIMIT ';
+            $sqlLimit .= $arrProp['limit'][0];
+            $sqlLimit .= ($arrProp['limit'][1]??NULL) ? ','.$arrProp['limit'][1] : NULL;
+        }
+        
+        
+        $sql = 
+        '
+            SELECT clientes.id, clientes.razao_social, 
+            SUM(vendas.horas_trabalhadas) as horas_trabalhadas,
+            SUM(vendas.valor_faturado) as valor_faturado,
+            SUM(vendas.valor_custo) as valor_custo,
+            SUM(vendas.valor_faturado-vendas.valor_custo) as resultado_venda
+            FROM vendas 
+            JOIN clientes ON vendas.clientes_id = clientes.id 
+            GROUP BY clientes.id
+            '.($sqlLimit??NULL).' 
+        ';
+        
+        $query = $this->db->query($sql);
+        
+        return $query->result_array();    
     }
     
 }
