@@ -53,6 +53,11 @@ $route['default_controller'] = 'main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+//API
+$route['api/vendas'] = 'api/VendasApiController';
+
 //Vendas
 $route['vendas'] = 'VendasController';
 $route['vendas/importar'] = 'VendasController/importar';
+
+

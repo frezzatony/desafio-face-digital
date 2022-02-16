@@ -17,6 +17,8 @@
 </div>
 <!-- ./wrapper -->
 
+<script type="text/javascript">var BASE_URL = '<?php echo BASE_URL;?>';</script> 
+
 <!-- jQuery -->
 <script src="/assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

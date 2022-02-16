@@ -26,10 +26,12 @@ class VendasController extends CI_Controller {
 		$arrImportPlanilha = $this->vendas->uploadPlanilha();
         
         if(!$arrImportPlanilha['status']){
-			$this->session->set_flashdata('error', $arrImportPlanilha['message']);
+			$this->session->set_flashdata('error_import', $arrImportPlanilha['message']);
 			$this->template->load('templates/default/template','vendas/importacao_view');
+            return;
 		}
 		
+        
         $arrImportPlanilha['cabecalho_primeira_linha'] = (bool)$this->input->get_post('cabecalho');
         
 		$arrDataImportacao = $this->vendas->getDataPlanilha($arrImportPlanilha);

@@ -53,6 +53,19 @@
                         <?php    
                             }
                         ?>
+                        
+                        <?php
+                            if($this->session->flashdata('error_import')){
+                        ?>
+                            <div class="callout callout-danger">
+                              <h5>Erro ao selecionar arquivo para importação</h5>
+                                <p>
+                                    Erro: <?php echo $this->session->flashdata('error_import');?>
+                                </p>
+                            </div>
+                        <?php    
+                            }
+                        ?>
 					</div>
 				</div>
 			</div>

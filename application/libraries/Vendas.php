@@ -48,7 +48,7 @@ class Vendas{
 				'message'	=>	$this->CI->upload->display_errors('','')
 			);
 		}
-
+       
 		$nomeArquivo= $this->CI->upload->data('file_name');
 		$extensaoArquivo = pathinfo($nomeArquivo,PATHINFO_EXTENSION);
 

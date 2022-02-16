@@ -19,6 +19,35 @@
 			<div class="col-12">
 				<div class="card">
 					<div class="card-body">
+                        <table id="tabela-vendas" class="table table-bordered table-striped">
+                          <thead>
+                          <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Data</th>
+                            <th class="text-center">Cliente</th>
+                            <th class="text-center">Serviço</th>
+                            <th class="text-center">Horas consumidas</th>
+                            <th class="text-center">Valor faturado(R$)</th>
+                            <th class="text-center">Custo (R$)</th>
+                            <th class="text-center">Resultado (R$)</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Data</th>
+                            <th class="text-center">Cliente</th>
+                            <th class="text-center">Serviço</th>
+                            <th class="text-center">Horas consumidas</th>
+                            <th class="text-center">Valor faturado(R$)</th>
+                            <th class="text-center">Custo (R$)</th>
+                            <th class="text-center">Resultado (R$)</th>
+                          </tr>
+                          </tfoot>
+                        </table>
 
 					</div>
 				</div>
@@ -41,7 +70,7 @@
 					
                     <div class="form-group">
 						<label for="planilha">Selecione um arquivo para importação:</label>
-						<input type="file" class="form-control" id="arquivo" name="arquivo" placeholder="Selecione um arquivo...">
+						<input type="file" class="form-control" id="arquivo" name="arquivo" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 					</div>
                     
                     <div class="form-check">

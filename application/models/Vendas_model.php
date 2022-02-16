@@ -42,11 +42,19 @@ class Vendas_model extends CI_Model
         );
         
         $this->db->from($this->table);
-        $this->db->join('clientes',$this->table.'.cliente_id = clientes.id');
-		$this->db->join('servicos',$this->table.'.servico_id = servicos.id');
+        $this->db->join('clientes',$this->table.'.clientes_id = clientes.id');
+		$this->db->join('servicos',$this->table.'.servicos_id = servicos.id');
         $query = $this->db->get();
         
         return $query->result_array();
+    }
+    
+    public function getCountItems()
+    {
+       
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+        
     }
     
     public function save($arrData = array())
