@@ -2,10 +2,10 @@
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Clientes_model extends CI_Model
+class Servicos_model extends CI_Model
 {
     
-    private $table = 'clientes';
+    private $table = 'servicos';
     
     function __construct(){
         parent::__construct();
@@ -28,13 +28,11 @@ class Clientes_model extends CI_Model
             }
         }
         
-        
-        $this->db->select(
-            array(
-                'id','cnpj','razao_social',
-                'cep','endereco','localidade','uf'
-            )
-        );
+        if($arrProp['where_in']??NULL){
+            foreach($arrProp['where_in'] as $where_in){
+                $this->db->where_in($where_in['column'],$where_in['values']);
+            }
+        }
         
         $this->db->from($this->table);
         $query = $this->db->get();
@@ -61,29 +59,6 @@ class Clientes_model extends CI_Model
         
         return ($arrData['id']??NULL) ? $arrData['id'] : $this->db->insert_id('pacientes_id_seq');
         
-    }
-    
-    public function importar($arrData = array()){
-        
-        $arrDataCliente = $this->get(
-            array(
-                'limit' =>  array(1),
-                'where' =>  array(
-                    array(
-                        'column'    =>  'cnpj',
-                        'value'     =>  $arrData['cnpj'],
-                    )
-                )
-            )
-        );
-        
-        
-        if(sizeof($arrDataCliente)){
-            $arrDataCliente = $arrDataCliente[0];
-            $arrData['id'] = $arrDataCliente['id'];
-        }
-        
-        return $this->save($arrData);
     }
     
     public function validate($arrProp = array())

@@ -13,7 +13,8 @@
 	"require": {
 		"php": ">=5.3.7",
 		"phpoffice/phpspreadsheet": "^1.21",
-		"brazanation/documents": "2.0.*"
+		"brazanation/documents": "2.0.*",
+		"ramsey/uuid": "^4.2"
 	},
 	"config":
     {

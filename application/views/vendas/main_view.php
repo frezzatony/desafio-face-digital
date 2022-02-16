@@ -38,12 +38,16 @@
 			</div>
 			<div class="modal-body">
 				<form action="/index.php/vendas/importar" id="form-importar-planilha" method="POST" enctype="multipart/form-data">
-					<div class="form-check">
-						<div class="form-group">
-							<label for="planilha">Selecione um arquivo para importação:</label>
-							<input type="file" class="form-control" id="arquivo" name="arquivo" placeholder="Selecione um arquivo...">
-						</div>
+					
+                    <div class="form-group">
+						<label for="planilha">Selecione um arquivo para importação:</label>
+						<input type="file" class="form-control" id="arquivo" name="arquivo" placeholder="Selecione um arquivo...">
 					</div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="cabecalho" name="cabecalho">
+                        <label class="form-check-label" for="cabecalho">Primeira linha contém cabeçalho</label>
+                    </div>
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">

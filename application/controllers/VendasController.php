@@ -18,6 +18,10 @@ class VendasController extends CI_Controller {
 		
 		$this->load->config('vendas');
 		$this->load->library('vendas');
+        
+        
+        $this->load->model('clientes_model');
+        $this->load->model('vendas_model');
 		
 		$arrImportPlanilha = $this->vendas->uploadPlanilha();
 
@@ -26,10 +30,27 @@ class VendasController extends CI_Controller {
 			redirect(BASE_URL.'index.php/vendas','refresh');
 		}
 		
+        $arrImportPlanilha['cabecalho_primeira_linha'] = (bool)$this->input->get_post('cabecalho');
+        
 		$arrDataImportacao = $this->vendas->getDataPlanilha($arrImportPlanilha);
-
-		print_R($arrDataImportacao); exit;
-
+        
+        $UUIDImportacao = \Ramsey\Uuid\Uuid::uuid4();
+        
+        foreach($arrDataImportacao['data'] as $rowImportacao){
+             $arrDataCliente = $rowImportacao;
+             unset($arrDataCliente['vendas']);
+             
+             $idCliente = $this->clientes_model->importar($arrDataCliente);
+             
+             foreach($rowImportacao['vendas']??array() as $venda){
+                $venda['clientes_id'] = $idCliente;
+                $venda['uuid_importacao'] = $UUIDImportacao;
+                $this->vendas_model->save($venda);
+             }
+                    
+        }
+        
+        
 		$this->session->set_flashdata('success', 'Importação realizada.');
 		redirect(BASE_URL.'index.php/vendas','refresh');
 	}
