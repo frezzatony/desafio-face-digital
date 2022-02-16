@@ -24,10 +24,10 @@ class VendasController extends CI_Controller {
         $this->load->model('vendas_model');
 		
 		$arrImportPlanilha = $this->vendas->uploadPlanilha();
-
-		if(!$arrImportPlanilha['status']){
+        
+        if(!$arrImportPlanilha['status']){
 			$this->session->set_flashdata('error', $arrImportPlanilha['message']);
-			redirect(BASE_URL.'index.php/vendas','refresh');
+			$this->template->load('templates/default/template','vendas/importacao_view');
 		}
 		
         $arrImportPlanilha['cabecalho_primeira_linha'] = (bool)$this->input->get_post('cabecalho');
@@ -46,12 +46,19 @@ class VendasController extends CI_Controller {
                 $venda['clientes_id'] = $idCliente;
                 $venda['uuid_importacao'] = $UUIDImportacao;
                 $this->vendas_model->save($venda);
-             }
-                    
+             }     
+        }
+        
+        if(!$arrDataImportacao['errors']){
+            $this->session->set_flashdata('success', 'Importação realizada sem erros.');    
+        }
+        else{
+            $this->session->set_flashdata('warning', 'Importação realizada com erros.');
+            $this->session->set_flashdata('errors', $arrDataImportacao['errors']);
         }
         
         
-		$this->session->set_flashdata('success', 'Importação realizada.');
-		redirect(BASE_URL.'index.php/vendas','refresh');
+		
+        $this->template->load('templates/default/template','vendas/importacao_view');
 	}
 }

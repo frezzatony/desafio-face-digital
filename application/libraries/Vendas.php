@@ -5,17 +5,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Vendas{
    
 	private $CI;
-    private const COLUNA_CNPJ = 0;
-    private const COLUNA_RAZAO_SOCIAL = 1;
-    private const COLUNA_ENDERECO = 2;
-    private const COLUNA_CIDADE = 3;
-    private const COLUNA_UF = 4;
-    private const COLUNA_CEP = 5;
-    private const COLUNA_DATA_VENDA = 6;
-    private const COLUNA_COD_SERVICO = 7;
-    private const COLUNA_HORAS_TRABALHADAS = 9;
-    private const COLUNA_VALOR_FATURADO = 10;
-    private const COLUNA_VALOR_CUSTO = 11;
+    private const COLUNA_CNPJ = 'A';
+    private const COLUNA_RAZAO_SOCIAL = 'B';
+    private const COLUNA_ENDERECO = 'C';
+    private const COLUNA_CIDADE = 'D';
+    private const COLUNA_UF = 'E';
+    private const COLUNA_CEP = 'F';
+    private const COLUNA_DATA_VENDA = 'G';
+    private const COLUNA_COD_SERVICO = 'H';
+    private const COLUNA_HORAS_TRABALHADAS = 'j';
+    private const COLUNA_VALOR_FATURADO = 'K';
+    private const COLUNA_VALOR_CUSTO = 'L';
 
 	function __construct()
 	{
@@ -68,7 +68,10 @@ class Vendas{
 		$caminhoArquivo = $this->CI->config->item('vendas_path_upload_fotos').'/'.$this->CI->config->item('vendas_nome_arquivo_upload').'.'.$arrProp['extensao'];
 
 		if(!file_exists($caminhoArquivo)){
-			return FALSE;
+			return array(
+                'status'    =>  FALSE,
+                'message'   =>  'Arquivo inexistente'
+            );
 		}
 		
         
@@ -76,21 +79,37 @@ class Vendas{
             
             $classReader = '\PhpOffice\PhpSpreadsheet\Reader\\'.ucfirst($arrProp['extensao']);
             $reader = new $classReader();
-            $reader->setReadDataOnly(true);
+            $reader->setReadDataOnly(TRUE);
             $spreadsheet = $reader->load($caminhoArquivo);
             
-            $spreadsheet = $spreadsheet->getSheet(0);
-            
         } catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
-            return FALSE;
+            return array(
+                'status'    =>  FALSE,
+                'message'   =>  'Não foi possível fazer a leitura do arquivo. Refaça a operação ou contate o administrador'
+            );
         }
 		
-        $dataPlanilha = $spreadsheet->toArray();
-               
-        $arrIdsServicosPlanilha = array_column($dataPlanilha,$this::COLUNA_COD_SERVICO);
-        $arrIdsServicosPlanilha = array_filter($arrIdsServicosPlanilha, fn($valor) => ($valor??NULL) AND (int)$valor); //filter para manter apenas inteiros informados
-        $arrIdsServicosPlanilha = array_unique($arrIdsServicosPlanilha);
-               
+        $spreadsheet = $spreadsheet->getSheet(0);
+        
+        $lastRowPlanilha = $spreadsheet->getHighestRow();
+        
+        
+        $arrIdsServicosPlanilha = array();
+        
+        //percorre as linhas da planilha para montar array de ids de serviços informados.
+        foreach($spreadsheet->getRowIterator() as $keyRow => $row){
+            
+            if($keyRow == 1 AND $arrProp['cabecalho_primeira_linha']??NULL){
+                continue;
+            }
+            
+            $tempValue = (int)$spreadsheet->getCell($this::COLUNA_COD_SERVICO.$keyRow)->getValue();
+            
+            if($tempValue AND !in_array($tempValue,$arrIdsServicosPlanilha)){
+                $arrIdsServicosPlanilha[] = $tempValue;    
+            }
+        }
+        
         $arrDataServicos = $this->CI->servicos_model->get(
             array(
                 'where_in'  =>  array(
@@ -108,22 +127,21 @@ class Vendas{
 		$arrErrors = array();
 
 		//os dados da planilha são aglutinados em um array composto dos dados do cliente com respectivas vendas
-		foreach($dataPlanilha as $keyRow => $row){
+		foreach($spreadsheet->getRowIterator() as $keyRow => $row){
 			
-            if($keyRow == 0 AND $arrProp['cabecalho_primeira_linha']??NULL){
+            if($keyRow == 1 AND $arrProp['cabecalho_primeira_linha']??NULL){
                 continue;
             }
             
             $erroLinha = false;
             
 			//verifica se a linha é válida a partir de um cnpj válido
-			$cnpj = Brazanation\Documents\Cnpj::createFromString(preg_replace('/[^0-9]/', '', trim($row[$this::COLUNA_CNPJ])));
+			$cnpj = Brazanation\Documents\Cnpj::createFromString(preg_replace('/[^0-9]/', '', trim($spreadsheet->getCell($this::COLUNA_CNPJ.$keyRow)->getFormattedValue())));
 			
 			if(!$cnpj){ //nao possuium cnpj valido, a linha nao sera importada e os dados do cliente nao serao atualizados
 				$arrErrors[] = array(
-					'row'		=>	($keyRow+1),
+					'row'		=>	$keyRow,
 					'error'	=> 'A coluna CNPJ não possui um documento válido',
-                    'value' =>  preg_replace('/[^0-9]/', '', trim($row[$this::COLUNA_CNPJ])),
 				);
 				continue;
 			}
@@ -132,11 +150,11 @@ class Vendas{
 			
 			$arrCliente = array(
 				'cnpj'				=>	$cnpj->number,
-				'razao_social'		=>	trim($row[$this::COLUNA_RAZAO_SOCIAL]),
-				'endereco'			=>	trim($row[$this::COLUNA_ENDERECO]),
-				'localidade'        =>	trim($row[$this::COLUNA_CIDADE]),
-				'uf'				=>	substr(trim($row[$this::COLUNA_UF]),0,2),
-				'cep'				=>	preg_replace('/[^0-9]/', '', $row[$this::COLUNA_CEP]),
+				'razao_social'		=>	trim($spreadsheet->getCell($this::COLUNA_RAZAO_SOCIAL.$keyRow)->getFormattedValue()),
+				'endereco'			=>	trim($spreadsheet->getCell($this::COLUNA_ENDERECO.$keyRow)->getFormattedValue()),
+				'localidade'        =>	trim($spreadsheet->getCell($this::COLUNA_CIDADE.$keyRow)->getFormattedValue()),
+				'uf'				=>	substr(trim($spreadsheet->getCell($this::COLUNA_UF.$keyRow)->getFormattedValue()),0,2),
+				'cep'				=>	preg_replace('/[^0-9]/', '',trim($spreadsheet->getCell($this::COLUNA_CEP.$keyRow)->getFormattedValue())),
 			);
             
 			if($keyCnpj===FALSE){
@@ -152,10 +170,10 @@ class Vendas{
 			}
 
             //verificacao servico informado
-            $codServico = (int)trim($row[$this::COLUNA_COD_SERVICO]);
+            $codServico = (int)trim($spreadsheet->getCell($this::COLUNA_COD_SERVICO.$keyRow)->getFormattedValue());
             if(!in_array($codServico,$arrIdsServicosValidos)){ //este erro nao impede de atualizar os dados do cliente, porem a venda nao sera importada
                 $arrErrors[] = array(
-					'row'	=>	($keyRow+1),
+					'row'	=>	$keyRow,
 					'error'	=>	'A coluna Código Serviço não possui um serviço cadastrado',
 				);
                 $erroLinha = TRUE;
@@ -163,10 +181,10 @@ class Vendas{
             
             
             //verificacao da data de venda
-			$dataVenda = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[$this::COLUNA_DATA_VENDA]);
+			$dataVenda = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($spreadsheet->getCell($this::COLUNA_DATA_VENDA.$keyRow)->getFormattedValue());
 			if(!$dataVenda){ //este erro nao impede de atualizar os dados do cliente, porem a venda nao sera importada
 				$arrErrors[] = array(
-					'row'	=>	($keyRow+1),
+					'row'	=>	$keyRow,
 					'error'	=>	'A coluna Data Venda não possui uma data válida',
 				);
                 $erroLinha = TRUE;
@@ -177,18 +195,18 @@ class Vendas{
 			
             
             //verificacao de horas trabalhadas
-            $horasTrabalhadas = trim($row[$this::COLUNA_HORAS_TRABALHADAS]);
+            $horasTrabalhadas = trim($spreadsheet->getCell($this::COLUNA_HORAS_TRABALHADAS.$keyRow)->getFormattedValue());
             if($horasTrabalhadas AND !is_numeric($horasTrabalhadas)){ //este erro nao impede de atualizar os dados do cliente, porem a venda nao sera importada
                
                $arrErrors[] = array(
-					'row'	=>	($keyRow+1),
+					'row'	=>	$keyRow,
 					'error'	=>	'A coluna Horas Trabalhadas não possui um valor válido',
 				);
                 $erroLinha = TRUE;
             }
             
             //verificacao de valor faturado
-            $valorFaturado = str_replace(',','',trim($row[$this::COLUNA_VALOR_FATURADO]));
+            $valorFaturado = str_replace(',','',trim($spreadsheet->getCell($this::COLUNA_VALOR_FATURADO.$keyRow)->getFormattedValue()));
             if($valorFaturado AND !is_numeric($valorFaturado)){ //este erro nao impede de atualizar os dados do cliente, porem a venda nao sera importada
                
                $arrErrors[] = array(
@@ -199,11 +217,11 @@ class Vendas{
             }
             
             //verificacao de valor custo
-            $valorCusto = str_replace(',','',trim($row[$this::COLUNA_VALOR_CUSTO]));
+            $valorCusto = str_replace(',','',trim($spreadsheet->getCell($this::COLUNA_VALOR_CUSTO.$keyRow)->getFormattedValue()));
             if($valorCusto AND !is_numeric($valorCusto)){ //este erro nao impede de atualizar os dados do cliente, porem a venda nao sera importada
                
                $arrErrors[] = array(
-					'row'	=>	($keyRow+1),
+					'row'	=>	$keyRow,
 					'error'	=>	'A coluna Valor Faturado não possui um valor válido',
 				);
                 $erroLinha = TRUE;
