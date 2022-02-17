@@ -36,15 +36,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                <a href="<?php echo BASE_URL ?>index.php/vendas/indicadores/servicos" class="nav-link">
                   <i class="nav-icon fas fa-list-alt"></i>
                   <p>Vendas por serviço</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../layout/boxed.html" class="nav-link">
+                <a href="<?php echo BASE_URL ?>index.php/vendas/indicadores/mensal" class="nav-link">
                   <i class="nav-icon fas fa-list-alt"></i>
-                  <p>Vendas por mês</p>
+                  <p>Vendas mensais</p>
                 </a>
               </li>
             </ul>

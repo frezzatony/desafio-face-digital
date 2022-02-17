@@ -56,10 +56,14 @@ $route['translate_uri_dashes'] = FALSE;
 //API
 $route['api/vendas'] = 'api/vendas/VendasApiController';
 $route['api/vendas/indicadores/clientes'] = 'api/vendas/IndicadoresVendasApiController/clientes';
+$route['api/vendas/indicadores/servicos'] = 'api/vendas/IndicadoresVendasApiController/servicos';
+$route['api/vendas/indicadores/mensal'] = 'api/vendas/IndicadoresVendasApiController/mensal';
 
 //Vendas
 $route['vendas'] = 'vendas/VendasController';
 $route['vendas/importar'] = 'vendas/VendasController/importar';
-$route['vendas/indicadores/clientes'] = 'vendas/IndicadoresVendasController/cliente';
+$route['vendas/indicadores/clientes'] = 'vendas/IndicadoresVendasController/clientes';
+$route['vendas/indicadores/servicos'] = 'vendas/IndicadoresVendasController/servicos';
+$route['vendas/indicadores/mensal'] = 'vendas/IndicadoresVendasController/mensal';
 
 

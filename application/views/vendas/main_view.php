@@ -12,7 +12,6 @@
 		</div>
 		</div><!-- /.container-fluid -->
 	</section>
-	<?php echo $this->session->flashdata('error'); ?>
 	<section class="content">
 		<div class="container-fluid">
 		<div class="row">
@@ -21,31 +20,31 @@
 					<div class="card-body">
                         <table id="tabela-vendas" class="table table-bordered table-striped">
                           <thead>
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Data</th>
-                            <th class="text-center">Cliente</th>
-                            <th class="text-center">Serviço</th>
-                            <th class="text-center">Horas consumidas</th>
-                            <th class="text-center">Valor faturado(R$)</th>
-                            <th class="text-center">Custo (R$)</th>
-                            <th class="text-center">Resultado (R$)</th>
-                          </tr>
+                              <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Data</th>
+                                <th class="text-center">Cliente</th>
+                                <th class="text-center">Serviço</th>
+                                <th class="text-center">Horas consumidas</th>
+                                <th class="text-center">Valor faturado(R$)</th>
+                                <th class="text-center">Custo (R$)</th>
+                                <th class="text-center">Resultado (R$)</th>
+                              </tr>
                           </thead>
                           <tbody>
                           
                           </tbody>
                           <tfoot>
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Data</th>
-                            <th class="text-center">Cliente</th>
-                            <th class="text-center">Serviço</th>
-                            <th class="text-center">Horas consumidas</th>
-                            <th class="text-center">Valor faturado(R$)</th>
-                            <th class="text-center">Custo (R$)</th>
-                            <th class="text-center">Resultado (R$)</th>
-                          </tr>
+                              <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Data</th>
+                                <th class="text-center">Cliente</th>
+                                <th class="text-center">Serviço</th>
+                                <th class="text-center">Horas consumidas</th>
+                                <th class="text-center">Valor faturado(R$)</th>
+                                <th class="text-center">Custo (R$)</th>
+                                <th class="text-center">Resultado (R$)</th>
+                              </tr>
                           </tfoot>
                         </table>
 
@@ -84,5 +83,16 @@
 				<button type="button" class="btn btn-success btn-importar"><i class="fa fa-upload"></i> Importar </button>
 			</div>
 		</div>
-		</div>
-	</div> 
+	</div>
+</div> 
+
+
+<?php
+
+    $this->template->set('view_javascsripts',
+        array(
+            '/assets/js/vendas/vendas.js'
+        )
+    );
+    
+?>

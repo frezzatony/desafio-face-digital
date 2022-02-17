@@ -7,11 +7,19 @@ class IndicadoresVendasController extends CI_Controller {
 		parent::__construct();
 	}
 
-	public function cliente()
-	{
-		$this->load->model('vendas_model');
-        
-		$this->template->load('templates/vendas/template','vendas/indicador_clientes_view');
+	public function clientes()
+	{        
+		$this->template->load('templates/vendas/template','vendas/indicadores/vendas_clientes_view');
+	}
+    
+    public function servicos()
+	{        
+		$this->template->load('templates/vendas/template','vendas/indicadores/vendas_servicos_view');
+	}
+    
+    public function mensal()
+	{        
+		$this->template->load('templates/vendas/template','vendas/indicadores/vendas_mensal_view');
 	}
 	
 }

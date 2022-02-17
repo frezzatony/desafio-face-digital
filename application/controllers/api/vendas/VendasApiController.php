@@ -33,7 +33,7 @@ class VendasApiController extends REST_Controller
            
         $arrData = array(
             'recordsTotal'      =>  count($dataItems),
-            'recordsFiltered'   =>  $this->vendas_model->getCountItems(),
+            'recordsFiltered'   =>  $this->vendas_model->getCountVendas(),
             'data'              =>  $dataItems,
         );
         
