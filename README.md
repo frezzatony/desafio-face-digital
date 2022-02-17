@@ -7,7 +7,7 @@ Esta é uma interface para controle de vendas, com importação de planilhas,  que 
 
 Para o desenvolvimento do fluxo de vendas, foi utilizada a linguagem PHP, com framework Codeigniter 3. Bancos de dados MySql.
 O frontend foi desenvolvido com auxílio do template Bootstrap Admin LTE 3, e javascript com JQuery. 
-PLanilhas com tamanhos inferiores a 5mb podem ser enviadas.
+Planilhas com tamanhos inferiores a 5mb podem ser enviadas.
 
 ## Bibliotecas de apoio
 
@@ -37,7 +37,7 @@ Na raiz da aplicação, instale as bibliotecas através do composer:
 
 A as migrations do banco de dados podem ser executadas no próprio navegador acessando a o caminho da aplicação /install, exemplo:
 
-    https://127.0.0.1/install
+    https://127.0.0.1/index.php/install
 Após ser exibida a confirmação de migration do banco de dados a aplicação estará pronta para ser executada.
 
 Utilize o caminho web raiz da aplicação para ter acesso ao projeto, exemplo:
